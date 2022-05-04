@@ -62,6 +62,14 @@ function checkLanguageGenera(language) {
 function checkLanguageFlavorText(language) {
   if (language.language.name == "en") return language;
 }
+function goToLast() {
+  query = ref(pokemon.id - 1);
+  fetchPokemon();
+}
+function goToNext() {
+  query = ref(pokemon.id + 1);
+  fetchPokemon();
+}
 </script>
 
 <template>
@@ -93,11 +101,13 @@ function checkLanguageFlavorText(language) {
       </div>
     </div>
     <div class="bottom">
+      <button  v-on:click="goToLast"> last </button>
       <input
         v-model="query"
         placeholder="Enter pokemon name or number"
         @keyup.enter="fetchPokemon"
       />
+      <button  v-on:click="goToNext" > next </button>
     </div>
   </div>
 </template>
@@ -231,6 +241,12 @@ input {
   font-size: 1rem;
   background-color: #485663;
   color: white;
+}
+
+button {
+  margin: 0px 10px 0px 10px;
+  padding: 10px 10px 10px 10px;
+  background-clip: #485663;
 }
 
 ::placeholder {
