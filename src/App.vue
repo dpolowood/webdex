@@ -21,8 +21,8 @@ var requestOptions = {
 
 fetchPokemon();
 function fetchPokemon() {
-  if (!query.value?.trim()) return;
-  query.value = query.value.toLowerCase();
+  //if (!query.value?.trim()) return;
+  //query.value = query.value.toLowerCase();
   fetch(`https://pokeapi.co/api/v2/pokemon/${query.value}`, requestOptions)
     .then((response) => {
       return response.json();
@@ -63,11 +63,12 @@ function checkLanguageFlavorText(language) {
   if (language.language.name == "en") return language;
 }
 function goToLast() {
-  query = ref(pokemon.id - 1);
+  if(state.pokemon.id == 1) return;
+  query.value = state.pokemon.id - 1;
   fetchPokemon();
 }
 function goToNext() {
-  query = ref(pokemon.id + 1);
+  query.value = state.pokemon.id + 1;
   fetchPokemon();
 }
 </script>
