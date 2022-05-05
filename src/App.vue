@@ -30,6 +30,28 @@ function fetchPokemon() {
     .then(setResults)
     .catch((error) => console.log("error", error));
   query.value = "";
+
+
+
+}
+
+function fetchLocation() {
+  //if (!query.value?.trim()) return;
+  //query.value = query.value.toLowerCase();
+  fetch(`https://pokeapi.co/api/v2/pokemon/${state.pokemon.name}/encounters`, requestOptions)
+    .then((response) => {
+      return response.json();
+    })
+    .then(setLocation)
+    .catch((error) => console.log("error", error));
+  
+}
+
+function setLocation(encounter){
+
+  state.pokemon.location = encounter["0"].location_area.name;
+  console.log(state.pokemon.location);
+
 }
 
 function setResults(results) {
@@ -43,6 +65,8 @@ function setResults(results) {
     })
     .then(setSpeciesInfo)
     .catch((error) => console.log("error", error));
+
+    fetchLocation();
 }
 
 function setSpeciesInfo(speciesInfo) {
@@ -96,6 +120,7 @@ function goToNext() {
       <div class="attributes">
         <p class="stats">Weight: {{ state.pokemon.weight }} kg</p>
         <p class="stats">Height: {{ state.pokemon.height }} m</p>
+        <p> {{state.pokemon.location}} </p>
         <p class="description">
           {{ state.flavor_text_entry.flavor_text }}
         </p>
