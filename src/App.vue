@@ -12,12 +12,15 @@ const state = reactive({
   species: {},
   genera: { genus: {} },
   flavor_text_entry: { flavor_text: {} },
+  sprites: []
 });
 
 var requestOptions = {
   method: "GET",
   redirect: "follow",
 };
+
+var n = ref(0);
 
 fetchPokemon();
 function fetchPokemon() {
@@ -56,7 +59,9 @@ function setLocation(encounter){
 
 function setResults(results) {
   state.pokemon = results;
-  state.sprite = state.pokemon.sprites.other["official-artwork"].front_default;
+  state.sprites[0] = state.pokemon.sprites.other["official-artwork"].front_default;
+  state.sprites[1] = state.pokemon.sprites.other.home.front_default;
+  state.sprites[2] = state.pokemon.sprites.other.home.front_shiny;
   state.pokemon.weight = (state.pokemon.weight * 0.1).toFixed(1);
   state.pokemon.height = (state.pokemon.height * 0.1).toFixed(1);
   fetch(`${state.pokemon.species.url}`, requestOptions)
@@ -95,6 +100,16 @@ function goToNext() {
   query.value = state.pokemon.id + 1;
   fetchPokemon();
 }
+function picToLast() {
+  if(n.value == 0) return;
+  n.value--;
+  console.log(n.value);
+}
+function picToNext() {
+  if(n.value == state.sprites.length-1) return;
+  n.value++;
+  console.log(n.value);
+}
 </script>
 
 <template>
@@ -116,7 +131,9 @@ function goToNext() {
       </div>
     </div>
     <div class="main">
-      <div class="image"><img :src="state.sprite" /></div>
+      <button  v-on:click="picToLast"> Prev </button>
+      <div class="image"><img :src="state.sprites[n]" /></div>
+      <button  v-on:click="picToNext" > Next </button>
       <div class="attributes">
         <p class="stats">Weight: {{ state.pokemon.weight }} kg</p>
         <p class="stats">Height: {{ state.pokemon.height }} m</p>
